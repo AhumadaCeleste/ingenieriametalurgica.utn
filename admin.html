@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de aspirantes · Ingeniería Metalúrgica UTN FRC</title>
+<meta name="theme-color" content="#001484">
+<link rel="icon" href="assets/img/logo-redondo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="login" class="login">
+  <form class="login-card" id="loginForm">
+    <img src="assets/img/logo.jpg" alt="Ingeniería Metalúrgica UTN">
+    <h1>Panel de aspirantes</h1>
+    <p>Ingresá con el email del Departamento y la clave de administración.</p>
+    <label>Email<input id="lEmail" type="email" autocomplete="username" required placeholder="ingenieriametalurgicafrc@gmail.com"></label>
+    <label>Clave<input id="lClave" type="password" autocomplete="current-password" required></label>
+    <p class="lerr" id="lErr" role="alert"></p>
+    <button class="btn btn-pink" id="lBtn" type="submit">Ingresar</button>
+    <a href="index.html" class="back">◂ Volver a la web</a>
+  </form>
+</section>
+
+<!-- ============ PANEL ============ -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="top-in">
+      <img src="assets/img/logo-redondo.png" alt="">
+      <div class="ttl">Panel de aspirantes<span>Ingeniería Metalúrgica · UTN FRC</span></div>
+      <div class="sp"></div>
+      <span class="sync" id="sync">Actualizado</span>
+      <button class="btn btn-ghost" id="bRefresh">↻ Actualizar</button>
+      <button class="btn btn-ghost" id="bCsv">⬇ Exportar</button>
+      <button class="btn btn-ghost" id="bOut">Salir</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- KPIs -->
+    <section class="kpis" id="kpis"></section>
+
+    <section class="row3">
+      <div class="panel">
+        <h2>Embudo de ingreso</h2>
+        <div id="funnel"></div>
+      </div>
+      <div class="panel">
+        <h2>¿Cómo nos conocieron?</h2>
+        <div id="origen"></div>
+      </div>
+      <div class="panel">
+        <h2>Seguimientos pendientes</h2>
+        <div id="agenda" class="agenda"></div>
+      </div>
+    </section>
+
+    <!-- Listado -->
+    <section class="panel list">
+      <div class="list-head">
+        <div class="chips" id="chips"></div>
+        <div class="filters">
+          <input id="q" type="search" placeholder="Buscar por nombre, DNI, email, colegio…">
+          <select id="fTipo"><option value="">Todos los tipos</option><option>Preinscripción</option><option>Consulta</option></select>
+          <select id="fSit"><option value="">Todas las situaciones</option></select>
+          <label class="tog"><input type="checkbox" id="fPend"> Solo con seguimiento vencido</label>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th data-sort="Apellidos">Persona</th><th>Contacto</th><th data-sort="Estado">Estado</th><th data-sort="Situación">Situación</th>
+            <th>Requisitos</th><th data-sort="Próximo contacto">Próximo contacto</th><th data-sort="Fecha">Ingresó</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <p class="empty" id="empty" hidden>No hay registros con esos filtros.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ FICHA (panel lateral) ============ -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="d-head">
+    <div>
+      <p class="d-id" id="dId"></p>
+      <h2 id="dName"></h2>
+      <p class="d-meta" id="dMeta"></p>
+    </div>
+    <button class="x" id="dClose" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="d-quick" id="dQuick"></div>
+  <div class="d-body">
+    <section class="d-sec">
+      <h3>Condición</h3>
+      <div class="pipe" id="dPipe"></div>
+      <p class="pipe-hint" id="dPipeHint"></p>
+      <label>Situación<select id="dSit"></select></label>
+    </section>
+
+    <section class="d-sec">
+      <h3>Requisitos <span class="req-count" id="dReqCount"></span></h3>
+      <div class="req-bar"><div id="dReqBar"></div></div>
+      <div id="dReqs"></div>
+      <div class="grid3">
+        <label>Legajo SysAcad<input id="dLegajo" inputmode="numeric"></label>
+        <label>Próximo contacto<input id="dProx" type="date"></label>
+      </div>
+      <label>Observaciones<textarea id="dObs" rows="3"></textarea></label>
+      <div class="d-save"><span id="dDirty"></span><button class="btn btn-pink" id="dSave">Guardar cambios</button></div>
+    </section>
+
+    <section class="d-sec">
+      <h3>Registrar seguimiento</h3>
+      <div class="acts" id="dActs"></div>
+      <textarea id="lDet" rows="2" placeholder="¿Qué pasó? Ej.: le escribí por WhatsApp, quedó en venir al pre-cursillo."></textarea>
+      <div class="grid3">
+        <label>Próximo contacto<input id="lProx" type="date"></label>
+        <div class="d-save end"><button class="btn btn-navy" id="lSave">Registrar</button></div>
+      </div>
+      <ol class="timeline" id="dLog"></ol>
+    </section>
+
+    <details class="d-sec d-data">
+      <summary>Datos personales</summary>
+      <div class="grid2" id="dData"></div>
+      <div class="d-save"><button class="btn btn-ghost-dark" id="dSaveData">Guardar datos</button></div>
+    </details>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
